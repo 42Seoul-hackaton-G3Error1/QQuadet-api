@@ -1,0 +1,15 @@
+{
+  "name": "qquadet-auth",
+  "version": "1.0.0",
+  "description": "42seoul qquadet-auth api",
+  "main": "server.js",
+  "scripts": {},
+  "author": "JaeSeoKim(aka.jaeskim) <jaeskim@student.42seoul.kr>",
+  "devDependencies": {
+    "@vercel/node": "^1.8.5"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "firebase-admin": "^9.4.2"
+  }
+}
