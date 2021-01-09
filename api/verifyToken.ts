@@ -6,7 +6,7 @@
 /*   By: jaeskim <jaeskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/09 23:14:05 by jaeskim           #+#    #+#             */
-/*   Updated: 2021/01/10 00:27:35 by jaeskim          ###   ########.fr       */
+/*   Updated: 2021/01/10 00:39:50 by jaeskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ const updateOrCreateUser = async (
   };
   console.log(updateParams);
   try {
-    return firebaseAdmin.auth().updateUser(userId, updateParams);
+    return await firebaseAdmin.auth().updateUser(userId, updateParams);
   } catch (error) {
     if (error.code === "auth/user-not-found") {
       updateParams["uid"] = userId;
-      return firebaseAdmin.auth().createUser(updateParams);
+      return await firebaseAdmin.auth().createUser(updateParams);
     }
     throw error;
   }
@@ -59,7 +59,7 @@ const createFirebaseToken = async (code: string) => {
   );
   const userId = userRecord.uid;
   console.log(`creating a custom firebase token based on uid ${userId}`);
-  return firebaseAdmin.auth().createCustomToken(userId, { provider: "42" });
+  return await firebaseAdmin.auth().createCustomToken(userId, { provider: "42" });
 };
 
 export default async (req: NowRequest, res: NowResponse) => {
