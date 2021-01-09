@@ -6,13 +6,13 @@
 /*   By: jaeskim <jaeskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/09 23:14:05 by jaeskim           #+#    #+#             */
-/*   Updated: 2021/01/09 23:16:08 by jaeskim          ###   ########.fr       */
+/*   Updated: 2021/01/10 00:27:35 by jaeskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import firebaseAdmin from "firebase-admin";
 import { NowRequest, NowResponse } from "@vercel/node";
-import { get42Me, get42Token } from "../src/api42";
+import { get42Profile, get42Token } from "../src/api42";
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert({
@@ -49,7 +49,7 @@ const updateOrCreateUser = async (
 
 const createFirebaseToken = async (code: string) => {
   const { access_token } = await get42Token(code);
-  const { id, login, email, image_url } = await get42Me(access_token);
+  const { id, login, email, image_url } = await get42Profile(access_token);
 
   const userRecord = await updateOrCreateUser(
     id.toString(),
@@ -63,16 +63,30 @@ const createFirebaseToken = async (code: string) => {
 };
 
 export default async (req: NowRequest, res: NowResponse) => {
-  const { code } = req.body;
-  if (!code)
-    return res
-      .status(400)
-      .send({ error: "There is no token." })
-      .send({ message: "Access code is a required parameter." });
+  const { method } = req;
 
-  console.log(`Verifying 42 code: ${code}`);
+  switch (method) {
+    case "POST":
+      const { code } = req.body;
+      if (!code)
+        return res.status(400).json({
+          error: "There is no token.",
+          message: "Access code is a required parameter.",
+        });
 
-  const firebaseToken = await createFirebaseToken(code);
-  console.log(`Returning firebase token to user: ${firebaseToken}`);
-  res.send({ firebase_token: firebaseToken });
+      console.log(`Verifying 42 code: ${code}`);
+      try {
+        const firebaseToken = await createFirebaseToken(code);
+        console.log(`Returning firebase token to user: ${firebaseToken}`);
+        res.json({ firebase_token: firebaseToken });
+      } catch (error) {
+        res.status(500).json({
+          error: "server error 500",
+          message: "Something was wrong..",
+        });
+      }
+    default:
+      res.setHeader("Allow", ["POST"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
+  }
 };

@@ -6,7 +6,7 @@
 /*   By: jaeskim <jaeskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 21:20:41 by jaeskim           #+#    #+#             */
-/*   Updated: 2021/01/09 23:16:07 by jaeskim          ###   ########.fr       */
+/*   Updated: 2021/01/10 00:16:24 by jaeskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ export interface get42MeData {
   cursus_users: get42UserCursusData[];
 }
 
-export const get42Me = async (access_token: string) => {
+export const get42Profile = async (access_token: string) => {
   const { data } = await Axios.get<get42MeData>(`${END_POINT_42API}/v2/me`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
