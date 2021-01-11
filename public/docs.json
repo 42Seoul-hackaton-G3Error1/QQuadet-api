@@ -1,0 +1,114 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "QQuadet api document",
+    "version": "1.0.0",
+    "description": "QQuadet에서 사용하는 API 문서 입니다!",
+    "contact": {
+      "name": "API Support",
+      "email": "jaeskim@student.42seoul.kr"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://qquadet-auth.now.sh/api",
+      "description": "production server"
+    },
+    {
+      "url": "http://localhost:3000/api",
+      "description": "localhost server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Auth Controller"
+    }
+  ],
+  "paths": {
+    "/verifyToken": {
+      "description": "check 42 login Auth",
+      "post": {
+        "tags": ["Auth"],
+        "summary": "get firebaseToken by 42 auth code",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "code": "fortytwo42fortytwo42fortytwo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "return firebaseToken",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "firebase_token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error response (Access code is a required parameter.)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errResponse"
+                },
+                "example": {
+                  "error": "There is no Code.",
+                  "message": "Access code is a required parameter."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "error response (server error 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errResponse"
+                },
+                "example": {
+                  "error": "server error 500.",
+                  "message": "Something was wrong.."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "errResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
