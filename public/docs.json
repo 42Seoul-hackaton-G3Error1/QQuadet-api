@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://qquadet-auth.now.sh/api",
+      "url": "https://qquadet-auth.vercel.app/api",
       "description": "production server"
     },
     {
