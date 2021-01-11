@@ -6,7 +6,7 @@
 /*   By: jaeskim <jaeskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 21:20:41 by jaeskim           #+#    #+#             */
-/*   Updated: 2021/01/11 17:00:04 by jaeskim          ###   ########.fr       */
+/*   Updated: 2021/01/11 18:15:05 by jaeskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ export const get42Token = async (code: string) => {
     data: { access_token, expires_in, created_at },
   } = await Axios.post<get42TokenData>(`${END_POINT_42API}/oauth/token`, {
     grant_type: "authorization_code",
-    client_id: process.env["42_CLIENT_ID"],
-    client_secret: process.env["42_CLIENT_SECRET"],
-    redirect_uri: process.env["42_REDIRECT_URI"],
+    client_id: process.env.FORTYTWO_CLIENT_ID,
+    client_secret: process.env.FORTYTWO_CLIENT_SECRET,
+    redirect_uri: process.env.FORTYTWO_REDIRECT_URI,
     code,
   });
 
